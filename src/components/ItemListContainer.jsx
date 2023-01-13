@@ -1,34 +1,31 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { collection, getDocs, getFirestore, query, where } from "firebase/firestore";
 import { useParams } from "react-router-dom";
+import Loading from "./Loading";
 import ItemList from "./ItemList";
 
-import arrayProductos from "./json/productos.json"
- 
-    const ItemListContainer = () => {
-       const [items, setItems] = useState([])
-       const {id} = useParams()
-        useEffect (() => {
+const ItemListContainer = () => {
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const {id} = useParams();
 
-            const promesa = new Promise ((resolve, reject) =>  {
-                setTimeout(()=>{
-                    resolve (id ? arrayProductos.filter(item => item.categoria === id) : arrayProductos)
-                }, 2000)
-            })
-            
-            promesa.then ((data) => {
-                setItems(data)
-            })
-        }, [id])
-
-          
-        return (
-            <div className="container">
-                  <ItemList items={items}/>                                
-            </div>
-        )
-    }
-
+    useEffect(() => {
+        const db = getFirestore();
+        const itemsCollection = collection(db, "items");
+        const q = id ? query(itemsCollection, where("categoria", "==", id)) : itemsCollection;
+        
+        getDocs(q).then((snapShot) => {
+            setItems(snapShot.docs.map((doc) => ({id:doc.id, ...doc.data()})
+            ));
+            setLoading(false);
+        });
+    }, [id]);
     
-    export default ItemListContainer;
+    return (
+        <div className="container">
+            {loading ? <Loading /> : <ItemList items={items} />}
+        </div>
+    )
+}
+
+export default ItemListContainer;

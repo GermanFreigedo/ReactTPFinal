@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import ItemDetail from "./ItemDetail";
-import arrayProductos from "./json/productos.json"
+import Loading from "./Loading";
 
-const ItemDetailContainer = ()=> {
-    const [item, setItem] = useState([])
-    const {id} = useParams()
-        useEffect (() => {
+const ItemDetailContainer = () => {
+    
+    const [item, setItem] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const {id} = useParams();
 
-            const promesa = new Promise ((resolve, reject) =>  {
-                setTimeout(()=>{
-                    resolve (arrayProductos.find(item => item.id === parseInt(id)))
-                }, 2000)
-            })
-            
-            promesa.then ((data) => {
-                setItem(data)
-            })
-        }, [id])
+    
+    useEffect(() => {
+        const db = getFirestore();
+        const item = doc(db, "items", id);
+        getDoc(item).then((snapShot) => {
+            if (snapShot.exists()) {
+                setItem({id:snapShot.id, ...snapShot.data()});
+                setLoading(false);
+            } else {
+                console.log("El Producto No Existe!");
+            }
+        });
+    }, [id]);
 
-    return(
-            <div className="container my-4 ">
-                <ItemDetail item={item}/>
 
-            </div>
+    return (
+        <div className="container my-5">
+             {loading ? <Loading /> : <ItemDetail item={item} />}
+        </div>
+        
     )
 }
 
-export default ItemDetailContainer
+export default ItemDetailContainer;

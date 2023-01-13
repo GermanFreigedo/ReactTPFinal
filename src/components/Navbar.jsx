@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import CartWidget from "./CartWidget";
+
 const NavBar = () => {
     return (
         <div className="container">
@@ -8,7 +9,7 @@ const NavBar = () => {
                 <div className="col-md-6">
                     <nav className="navbar navbar-expand-lg">
                         <div className="container-fluid">
-                            <Link className="navbar-brand" to={"/"}><img src="/images/logo.PNG" alt="InstaBuy" width="180" /></Link>
+                            <Link className="navbar-brand" to={"/"}><img src="/images/logo.PNG" alt="InstaBuy" width="220" /></Link>
                             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                 <span className="navbar-toggler-icon"></span>
                             </button>
