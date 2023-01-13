@@ -19,7 +19,7 @@ const ItemDetailContainer = () => {
                 setItem({id:snapShot.id, ...snapShot.data()});
                 setLoading(false);
             } else {
-                console.log("El Producto No Existe!");
+                console.log("El producto no existe!");
             }
         });
     }, [id]);

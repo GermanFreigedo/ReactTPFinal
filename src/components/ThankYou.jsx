@@ -13,7 +13,7 @@ const ThankYou = () => {
                         <h1>Gracias por su Compra!</h1>
                         <p>El número de orden es: <b>{id}</b></p>
                     </div>
-                    <Link to={"/"} className="btn btn-warning">Volver a la página principal</Link>
+                    <Link to={"/"} className="btn btn-primary">Volver a la página principal</Link>
                 </div>
             </div>
         </div>

@@ -7,6 +7,7 @@ const Checkout = () => {
 
     const {cart, clear, sumTotal} = useContext(CartContext);
     const [nombre, setNombre] = useState("");
+    const [Apellido, setApellido] = useState("");
     const [telefono, setTelefono] = useState("");
     const [email, setEmail] = useState("");
     const [orderId, setOrderId] = useState("");
@@ -15,7 +16,7 @@ const Checkout = () => {
     const generarOrden = () => {
         const fecha = new Date();
         const order = {
-            buyer: {name:nombre, phone:telefono, email:email},
+            buyer: {name:nombre, lasName:Apellido, phone:telefono, email:email},
             items: cart.map(item => ({id:item.id, title:item.nombre, quantity:item.quantity, price:item.precio, price_total:item.quantity * item.precio})),
             total: sumTotal(),
             order_date: `${fecha.getFullYear()}-${fecha.getMonth() + 1}-${fecha.getDate()} ${fecha.getHours()}:${fecha.getMinutes()}:${fecha.getSeconds()}`
@@ -38,7 +39,7 @@ const Checkout = () => {
             clear();
         });
     }
-
+    
     return (
         <div className="container">
             <div className="row my-5">
@@ -47,6 +48,10 @@ const Checkout = () => {
                         <div className="mb-3">
                             <label for="nombre" className="form-label">Nombre:</label>
                             <input type="text" className="form-control" placeholder="Ingrese su Nombre" onInput={(e) => {setNombre(e.target.value)}} />
+                        </div>
+                        <div className="mb-3">
+                            <label for="Apellido" className="form-label">Apellido:</label>
+                            <input type="text" className="form-control" placeholder="Ingrese su Apellido" onInput={(e) => {setApellido(e.target.value)}} />
                         </div>
                         <div className="mb-3">
                             <label for="telefono" className="form-label">Teléfono:</label>
@@ -72,8 +77,8 @@ const Checkout = () => {
                                 ))
                             }
                             <tr>
-                                <td className="text-end" colSpan={3}><b>Total a Pagar</b></td>
-                                <td className="text-end"><b>${sumTotal()}</b></td>
+                                <td className="text-end" colSpan={3}><b>Total a pagar</b></td>
+                                <td className="text-start"><b>${sumTotal()}</b></td>
                             </tr>
                         </tbody>
                     </table>    
